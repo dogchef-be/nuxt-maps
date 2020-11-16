@@ -6,6 +6,7 @@ NuxtJS module for Google Maps
 
 ## Main features
 
+- Load Google Maps only when required
 - TypeScript support
 
 ## Setup
