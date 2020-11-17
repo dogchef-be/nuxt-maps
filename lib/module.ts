@@ -9,11 +9,13 @@ declare module "vue/types/vue" {
 
 export default function MapsModule(this: any): void {
   const defaults = {
-    key: null,
     libraries: [],
   };
 
   const options = Object.assign({}, defaults, this.options.maps);
+  if (typeof options.apiKey !== "string" || !options.apiKey.length) {
+    throw new Error("nuxt-maps: apiKey is required");
+  }
 
   this.addPlugin({
     src: path.resolve(__dirname, "plugin.js"),
