@@ -9,9 +9,10 @@ const loader = new Loader({
 
 export async function getGoogleMapsInstance(
   arg?: "destroy"
-): Promise<typeof google.maps> {
+): Promise<typeof google.maps | void> {
   if (arg === "destroy") {
     loader.deleteScript();
+    return;
   }
 
   let instance = window.google.maps;
