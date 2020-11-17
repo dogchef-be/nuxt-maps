@@ -7,7 +7,13 @@ const loader = new Loader({
   libraries: ["places"],
 });
 
-export async function getGoogleMapsInstance(): Promise<typeof google.maps> {
+export async function getGoogleMapsInstance(
+  arg?: "destroy"
+): Promise<typeof google.maps> {
+  if (arg === "destroy") {
+    loader.deleteScript();
+  }
+
   let instance = window.google.maps;
 
   if (!instance) {
