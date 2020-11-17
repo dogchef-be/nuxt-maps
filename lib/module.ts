@@ -1,16 +1,16 @@
 import path from "path";
-import { getMapsInstance } from "./plugin";
+import { getGoogleMapsInstance } from "./plugin";
 
 declare module "vue/types/vue" {
   interface Vue {
-    $maps: typeof getMapsInstance;
+    $gmaps: typeof getGoogleMapsInstance;
   }
 }
 
 export default function MapsModule(this: any): void {
   const defaults = {
     key: null,
-    libraries: []
+    libraries: [],
   };
 
   const options = Object.assign({}, defaults, this.options.maps);
@@ -18,6 +18,6 @@ export default function MapsModule(this: any): void {
   this.addPlugin({
     src: path.resolve(__dirname, "plugin.js"),
     ssr: "false",
-    options
+    options,
   });
 }
