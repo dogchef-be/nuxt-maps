@@ -6,7 +6,7 @@ NuxtJS module for Google Maps
 
 ## Main features
 
-- Load Google Maps only when required
+- Load Google Maps JavaScript API script only when required (once `$gmaps()` is called)
 - TypeScript support
 
 ## Setup
@@ -17,11 +17,42 @@ NuxtJS module for Google Maps
 npm install nuxt-maps
 ```
 
-...
+2. Add `nuxt-maps` module and configuration to `nuxt.config.js`:
+
+```js
+export default {
+  // ...other config options
+  modules: ["nuxt-maps"];
+  maps: {
+    apiKey: 'XXXXXXXXXXXXXXXXX',
+  }
+}
+```
+
+3. (Optional) TypeScript support. Add `nuxt-maps` to the `types` section of `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["nuxt-maps"]
+  }
+}
+```
 
 ## Options
 
-...
+### `apiKey`
+
+- Type: `String`
+
+Your Google API Key.
+
+### `i18n`
+
+- Type: `Boolean`
+- Default: `false`
+
+Enable [i18n-module](https://github.com/nuxt-community/i18n-module) integration.
 
 ## Usage
 
