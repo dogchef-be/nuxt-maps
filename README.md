@@ -1,8 +1,21 @@
-# nuxt-maps
+<h1 align="center">
+  nuxt-maps
+</h1>
+<p align="center">
+  NuxtJS module for Google Maps<br />
+</p>
 
-<a href="https://www.npmjs.com/package/nuxt-maps"><img src="https://img.shields.io/npm/v/nuxt-maps?style=flat-square"></a> <a href="https://www.npmjs.com/package/nuxt-maps"><img src="https://img.shields.io/npm/dt/nuxt-maps?style=flat-square"></a> <a href="#"><img src="https://img.shields.io/github/license/dogchef-be/nuxt-maps?style=flat-square"></a>
+<p align="center">
+  <a href="https://www.npmjs.com/package/nuxt-maps"><img src="https://img.shields.io/npm/v/nuxt-maps?style=flat-square"></a> <a href="https://www.npmjs.com/package/nuxt-maps"><img src="https://img.shields.io/npm/dt/nuxt-maps?style=flat-square"></a> <a href="#"><img src="https://img.shields.io/github/license/dogchef-be/nuxt-maps?style=flat-square"></a>
+</p>
+<br />
 
-NuxtJS module for Google Maps
+## Table of contents
+- [Main features](#main-features)
+- [Setup](#setup)
+- [Options](#options)
+- [Usage](#usage)
+- [License](#license)
 
 ## Main features
 
