@@ -1,6 +1,6 @@
 {
   "name": "nuxt-maps",
-  "version": "1.0.3-alpha",
+  "version": "1.0.4-alpha",
   "description": "NuxtJS module for Google Maps",
   "repository": "github:dogchef-be/nuxt-maps",
   "license": "MIT",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.12.11",
-    "@types/googlemaps": "^3.43.3"
+    "@types/google.maps": "^3.47.1"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.8",

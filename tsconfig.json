@@ -14,7 +14,7 @@
       "~/*": ["./*"]
     },
     "outDir": "dist",
-    "types": ["@nuxt/types", "@types/googlemaps", "nuxt-i18n"]
+    "types": ["@nuxt/types", "@types/google.maps", "nuxt-i18n"]
   },
   "exclude": ["node_modules"],
   "include": ["lib"]
