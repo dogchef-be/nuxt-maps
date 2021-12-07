@@ -1,7 +1,14 @@
 import { Plugin } from "@nuxt/types";
 import { Loader } from "@googlemaps/js-api-loader";
 
-let loader: Loader | undefined;
+declare global {
+  interface Window {
+    gm_authFailure: any
+    google: any
+  }
+}
+
+let loader: Loader | null;
 
 function _isTrue(val: string): boolean {
   return val === "true";
@@ -34,11 +41,18 @@ export async function getGoogleMapsInstance(
     if (loader) {
       loader.deleteScript();
     }
-    loader = undefined;
+
+    delete window.gm_authFailure;
+    delete window.google;
+    loader = null;
+
+    const scripts = document.querySelectorAll('script[src*="maps.googleapis.com"]');
+    scripts.forEach((script) => script.remove());
+
     return;
   }
 
-  if (!window.google?.maps) {
+  if (!loader || !window.google?.maps) {
     await loadGoogleMaps(arg?.language, arg?.region);
   }
 
