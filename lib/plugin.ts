@@ -3,12 +3,12 @@ import { Loader } from "@googlemaps/js-api-loader";
 
 declare global {
   interface Window {
-    gm_authFailure: any
-    google: any
+    gm_authFailure?: Function
+    google?: any
   }
 }
 
-let loader: Loader | null;
+let loader: Loader | undefined;
 
 function _isTrue(val: string): boolean {
   return val === "true";
@@ -42,9 +42,9 @@ export async function getGoogleMapsInstance(
       loader.deleteScript();
     }
 
-    delete window.gm_authFailure;
-    delete window.google;
-    loader = null;
+    window.gm_authFailure = undefined;
+    window.google = undefined;
+    loader = undefined;
 
     const scripts = document.querySelectorAll('script[src*="maps.googleapis.com"]');
     scripts.forEach((script) => script.remove());
