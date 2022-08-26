@@ -1,6 +1,6 @@
 {
   "name": "nuxt-maps",
-  "version": "1.0.5-alpha",
+  "version": "1.0.6-alpha",
   "description": "NuxtJS module for Google Maps",
   "repository": "github:dogchef-be/nuxt-maps",
   "license": "MIT",
