@@ -10,6 +10,7 @@ declare module "vue/types/vue" {
 export default function MapsModule(this: any): void {
   const defaults = {
     i18n: false,
+    retries: 3,
     libraries: [],
   };
 

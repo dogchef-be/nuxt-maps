@@ -8,6 +8,8 @@ declare global {
   }
 }
 
+const RETRIES: number = Number("<%= options.retries %>");
+
 let loader: Loader | undefined;
 
 function _isTrue(val: string): boolean {
@@ -17,7 +19,7 @@ function _isTrue(val: string): boolean {
 async function loadGoogleMaps(
   language?: string,
   region?: string
-): Promise<void> {
+): Promise<boolean> {
   if (!language && _isTrue("<%= options.i18n %>")) {
     language = window.$nuxt.$i18n.locale;
   }
@@ -28,10 +30,16 @@ async function loadGoogleMaps(
     region: region,
     version: "quarterly",
     libraries: ["places"],
-    retries: 3,
+    retries: RETRIES,
   });
 
-  await loader.load();
+  try {
+    await loader.load();
+  } catch (err: any) {
+    return false
+  }
+
+  return true
 }
 
 export async function getGoogleMapsInstance(
@@ -53,7 +61,13 @@ export async function getGoogleMapsInstance(
   }
 
   if (!loader || !window.google?.maps) {
-    await loadGoogleMaps(arg?.language, arg?.region);
+    const isLoaded = await loadGoogleMaps(arg?.language, arg?.region);
+
+    if (!isLoaded) {
+      throw new Error(
+        `nuxt-maps: Failed to load google maps library after ${RETRIES} retries`
+      )
+    }
   }
 
   return window.google?.maps;
