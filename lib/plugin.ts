@@ -44,7 +44,7 @@ async function loadGoogleMaps(
 
 export async function getGoogleMapsInstance(
   arg?: "destroy" | { language?: string; region?: string }
-): Promise<typeof google.maps | void> {
+): Promise<typeof google.maps | undefined> {
   if (arg === "destroy") {
     if (loader) {
       loader.deleteScript();
@@ -57,7 +57,7 @@ export async function getGoogleMapsInstance(
     const scripts = document.querySelectorAll('script[src*="maps.googleapis.com"]');
     scripts.forEach((script) => script.remove());
 
-    return;
+    return undefined;
   }
 
   if (!loader || !window.google?.maps) {
