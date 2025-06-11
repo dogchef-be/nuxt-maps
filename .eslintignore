@@ -1,0 +1,13 @@
+# assets
+assets/**
+static/**
+
+# dependencies
+node_modules
+
+# nuxt
+.nuxt
+dist
+
+# other
+.vscode

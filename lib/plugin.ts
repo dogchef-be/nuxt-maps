@@ -1,10 +1,10 @@
 import { Plugin } from "@nuxt/types";
-import { Loader } from "@googlemaps/js-api-loader";
+import { Library, Loader } from "@googlemaps/js-api-loader";
 
 declare global {
   interface Window {
-    gm_authFailure?: Function
-    google?: any
+    gm_authFailure?: Function;
+    google?: any;
   }
 }
 
@@ -17,8 +17,9 @@ function _isTrue(val: string): boolean {
 }
 
 async function loadGoogleMaps(
+  name: Library,
   language?: string,
-  region?: string
+  region?: string,
 ): Promise<boolean> {
   if (!language && _isTrue("<%= options.i18n %>")) {
     language = window.$nuxt.$i18n.locale;
@@ -34,16 +35,16 @@ async function loadGoogleMaps(
   });
 
   try {
-    await loader.load();
+    await loader.importLibrary(name);
   } catch (err: any) {
-    return false
+    return false;
   }
 
-  return true
+  return true;
 }
 
 export async function getGoogleMapsInstance(
-  arg?: "destroy" | { language?: string; region?: string }
+  arg?: "destroy" | { name: Library; language?: string; region?: string },
 ): Promise<typeof google.maps | undefined> {
   if (arg === "destroy") {
     if (loader) {
@@ -54,26 +55,32 @@ export async function getGoogleMapsInstance(
     window.google = undefined;
     loader = undefined;
 
-    const scripts = document.querySelectorAll('script[src*="maps.googleapis.com"]');
+    const scripts = document.querySelectorAll(
+      'script[src*="maps.googleapis.com"]',
+    );
     scripts.forEach((script) => script.remove());
 
     return undefined;
   }
 
   if (!loader || !window.google?.maps) {
-    const isLoaded = await loadGoogleMaps(arg?.language, arg?.region);
+    const isLoaded = await loadGoogleMaps(
+      arg?.name ?? "places",
+      arg?.language,
+      arg?.region,
+    );
 
     if (!isLoaded) {
       throw new Error(
-        `nuxt-maps: Failed to load google maps library after ${RETRIES} retries`
-      )
+        `nuxt-maps: Failed to load google maps library after ${RETRIES} retries`,
+      );
     }
   }
 
   return window.google?.maps;
 }
 
-const googleMapsPlugin: Plugin = (ctx, inject): void => {
+const googleMapsPlugin: Plugin = (_, inject): void => {
   inject("gmaps", getGoogleMapsInstance);
 };
 
