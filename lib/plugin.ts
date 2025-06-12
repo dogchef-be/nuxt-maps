@@ -23,6 +23,8 @@ type LibraryReturnType = {
   visualization: google.maps.VisualizationLibrary;
 };
 
+type DefaultReturnType = google.maps.PlacesLibrary;
+
 const RETRIES: number = Number("<%= options.retries %>");
 
 let loader: Loader | undefined;
@@ -59,9 +61,11 @@ async function loadGoogleMaps(
 }
 
 export async function getGoogleMapsInstance<T extends Library = Library>(
-  arg?: "destroy" | { name: T; language?: string; region?: string },
+  arg?: "destroy" | { name?: T; language?: string; region?: string },
 ): Promise<
-  | (T extends keyof LibraryReturnType ? LibraryReturnType[T] : unknown)
+  | (T extends keyof LibraryReturnType
+      ? LibraryReturnType[T]
+      : DefaultReturnType)
   | undefined
 > {
   if (arg === "destroy") {
