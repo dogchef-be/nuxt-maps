@@ -8,6 +8,21 @@ declare global {
   }
 }
 
+type LibraryReturnType = {
+  core: google.maps.CoreLibrary;
+  maps: google.maps.MapsLibrary;
+  places: google.maps.PlacesLibrary;
+  geocoding: google.maps.GeocodingLibrary;
+  routes: google.maps.RoutesLibrary;
+  marker: google.maps.MarkerLibrary;
+  geometry: google.maps.GeometryLibrary;
+  elevation: google.maps.ElevationLibrary;
+  streetView: google.maps.StreetViewLibrary;
+  journeySharing: google.maps.JourneySharingLibrary;
+  drawing: google.maps.DrawingLibrary;
+  visualization: google.maps.VisualizationLibrary;
+};
+
 const RETRIES: number = Number("<%= options.retries %>");
 
 let loader: Loader | undefined;
@@ -43,9 +58,12 @@ async function loadGoogleMaps(
   return true;
 }
 
-export async function getGoogleMapsInstance(
-  arg?: "destroy" | { name: Library; language?: string; region?: string },
-): Promise<typeof google.maps | undefined> {
+export async function getGoogleMapsInstance<T extends Library = Library>(
+  arg?: "destroy" | { name: T; language?: string; region?: string },
+): Promise<
+  | (T extends keyof LibraryReturnType ? LibraryReturnType[T] : unknown)
+  | undefined
+> {
   if (arg === "destroy") {
     if (loader) {
       loader.deleteScript();

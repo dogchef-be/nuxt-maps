@@ -1,4 +1,7 @@
-const minorUpdatesOnly = ['nuxt']
+const minorUpdatesOnly = [
+  '@nuxtjs/i18n',
+  'nuxt',
+]
 
 const patchUpdatesOnly = [
   'eslint', // ! Breaks @nuxtjs/eslint-config-typescript
