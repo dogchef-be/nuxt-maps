@@ -34,7 +34,7 @@ function _isTrue(val: string): boolean {
 }
 
 async function loadGoogleMaps(
-  name: Library,
+  name: Library = "places",
   language?: string,
   region?: string,
 ): Promise<boolean> {
@@ -87,7 +87,7 @@ export async function getGoogleMapsInstance<T extends Library = Library>(
 
   if (!loader || !window.google?.maps) {
     const isLoaded = await loadGoogleMaps(
-      arg?.name ?? "places",
+      arg?.name,
       arg?.language,
       arg?.region,
     );
