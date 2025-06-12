@@ -8,22 +8,18 @@ declare global {
   }
 }
 
-type LibraryReturnType = {
-  core: google.maps.CoreLibrary;
-  maps: google.maps.MapsLibrary;
-  places: google.maps.PlacesLibrary;
-  geocoding: google.maps.GeocodingLibrary;
-  routes: google.maps.RoutesLibrary;
-  marker: google.maps.MarkerLibrary;
-  geometry: google.maps.GeometryLibrary;
-  elevation: google.maps.ElevationLibrary;
-  streetView: google.maps.StreetViewLibrary;
-  journeySharing: google.maps.JourneySharingLibrary;
-  drawing: google.maps.DrawingLibrary;
-  visualization: google.maps.VisualizationLibrary;
+type InstanceType = {
+  drawing: typeof google.maps.drawing;
+  geometry: typeof google.maps.geometry;
+  journeySharing: typeof google.maps.journeySharing;
+  localContext: typeof google.maps.localContext;
+  maps: typeof google.maps.maps3d;
+  marker: typeof google.maps.marker;
+  places: typeof google.maps.places;
+  visualization: typeof google.maps.visualization;
 };
 
-type DefaultReturnType = google.maps.PlacesLibrary;
+type LibraryType = Extract<keyof InstanceType, Library>;
 
 const RETRIES: number = Number("<%= options.retries %>");
 
@@ -34,7 +30,7 @@ function _isTrue(val: string): boolean {
 }
 
 async function loadGoogleMaps(
-  name: Library = "places",
+  name: LibraryType = "places",
   language?: string,
   region?: string,
 ): Promise<boolean> {
@@ -60,14 +56,10 @@ async function loadGoogleMaps(
   return true;
 }
 
-export async function getGoogleMapsInstance<T extends Library = Library>(
+// Returns a Promise that resolves to google.maps or undefined if destroyed or not loaded
+export async function getGoogleMapsInstance<T extends LibraryType = "places">(
   arg?: "destroy" | { name?: T; language?: string; region?: string },
-): Promise<
-  | (T extends keyof LibraryReturnType
-      ? LibraryReturnType[T]
-      : DefaultReturnType)
-  | undefined
-> {
+): Promise<InstanceType[T] | undefined> {
   if (arg === "destroy") {
     if (loader) {
       loader.deleteScript();
@@ -99,7 +91,7 @@ export async function getGoogleMapsInstance<T extends Library = Library>(
     }
   }
 
-  return window.google?.maps;
+  return window?.google?.maps[(arg?.name as T) ?? "places"];
 }
 
 const googleMapsPlugin: Plugin = (_, inject): void => {
