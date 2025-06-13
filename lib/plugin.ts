@@ -1,25 +1,5 @@
 import { Plugin } from "@nuxt/types";
-import { Library, Loader } from "@googlemaps/js-api-loader";
-
-declare global {
-  interface Window {
-    gm_authFailure?: Function;
-    google?: any;
-  }
-}
-
-type InstanceType = {
-  drawing: typeof google.maps.drawing;
-  geometry: typeof google.maps.geometry;
-  journeySharing: typeof google.maps.journeySharing;
-  localContext: typeof google.maps.localContext;
-  maps: typeof google.maps.maps3d;
-  marker: typeof google.maps.marker;
-  places: typeof google.maps.places;
-  visualization: typeof google.maps.visualization;
-};
-
-type LibraryType = Extract<keyof InstanceType, Library>;
+import { Loader } from "@googlemaps/js-api-loader";
 
 const RETRIES: number = Number("<%= options.retries %>");
 
@@ -30,7 +10,7 @@ function _isTrue(val: string): boolean {
 }
 
 async function loadGoogleMaps(
-  name: LibraryType = "places",
+  name: NuxtMapsLibrary = "places",
   language?: string,
   region?: string,
 ): Promise<boolean> {
@@ -57,9 +37,11 @@ async function loadGoogleMaps(
 }
 
 // Returns a Promise that resolves to google.maps or undefined if destroyed or not loaded
-export async function getGoogleMapsInstance<T extends LibraryType = "places">(
+export async function getGoogleMapsInstance<
+  T extends NuxtMapsLibrary = "places",
+>(
   arg?: "destroy" | { name?: T; language?: string; region?: string },
-): Promise<InstanceType[T] | undefined> {
+): Promise<NuxtMapsInstance[T] | null> {
   if (arg === "destroy") {
     if (loader) {
       loader.deleteScript();
@@ -74,7 +56,7 @@ export async function getGoogleMapsInstance<T extends LibraryType = "places">(
     );
     scripts.forEach((script) => script.remove());
 
-    return undefined;
+    return null;
   }
 
   if (!loader || !window.google?.maps) {
@@ -91,7 +73,7 @@ export async function getGoogleMapsInstance<T extends LibraryType = "places">(
     }
   }
 
-  return window?.google?.maps[(arg?.name as T) ?? "places"];
+  return window?.google?.maps[(arg?.name as T) ?? "places"] ?? null;
 }
 
 const googleMapsPlugin: Plugin = (_, inject): void => {
