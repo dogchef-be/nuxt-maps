@@ -1,5 +1,6 @@
 import { Plugin } from "@nuxt/types";
 import { Loader } from "@googlemaps/js-api-loader";
+import { NuxtMapsLibrary, NuxtMapsInstance } from "./@types";
 
 const RETRIES: number = Number("<%= options.retries %>");
 
